@@ -1,0 +1,5 @@
+.devcontainer
+.venv/*
+__pycache__/*
+data/*
+ted-scraper/spiders/__pycache__/*
