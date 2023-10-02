@@ -6,6 +6,11 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from scrapy.pipelines.files import FilesPipeline
+
+class TedFilesPipeline(FilesPipeline):
+    def file_path(self, request, response=None, info=None, *, item=None):
+        pass
 
 
 class Tedscraper2Pipeline:

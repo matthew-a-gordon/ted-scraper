@@ -3,3 +3,6 @@
 __pycache__/*
 data/*
 ted-scraper/spiders/__pycache__/*
+ted-scraper/__pycache__/*
+output/*
+downloads/*

@@ -3,13 +3,14 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import hashlib
 from scrapy import signals
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
 
 
-class Tedscraper2SpiderMiddleware:
+class TedscraperSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
     # passed objects.
@@ -56,7 +57,7 @@ class Tedscraper2SpiderMiddleware:
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-class Tedscraper2DownloaderMiddleware:
+class TedscraperDownloaderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the downloader middleware does not modify the
     # passed objects.
@@ -69,6 +70,22 @@ class Tedscraper2DownloaderMiddleware:
         return s
 
     def process_request(self, request, spider):
+        # TODO: update this code to check for two things,
+        # 1- the existence of a file with the name matching the SHA-1 hash of the request.url
+        #   which indicates that the video has already been downloaded, and
+        # 2 - a row in the DB that matches the URL of the video detail page
+        # if either of these conditions are met, it means we've already got the video and the details,
+        # so we should raise an IngoreRequest() exception.
+
+        # THERE'S A REDIRECT IN HERE, SO WE NEED TO MAKE SURE THAT THE ORIGINAL URL AND SHA1 ARE USEFUL
+
+        # The scrapy.pipelines.files.FilesPipeline handler defaults to a SHA-1 hash of the URL
+        # for the filename, so we'll need that to check for the existence of the file already.
+
+        sha1 = hashlib.sha1()
+        sha1.update(request.url.encode("utf-8"))
+        filename = sha1.hexdigest()
+
         # Called for each request that goes through the downloader
         # middleware.
 
